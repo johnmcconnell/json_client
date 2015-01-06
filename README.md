@@ -1,4 +1,6 @@
 # JsonClient
+[![Build
+Status](https://travis-ci.org/johnmcconnell/json_client.svg?branch=master)](https://travis-ci.org/johnmcconnell/json_client)
 
 A simple crud json client so that I don't need to do this for
 all my web services
@@ -26,8 +28,11 @@ require 'json_client'
 class CrudClient < JsonClient::AbstractClient
 end
 
-pather = JsonClient::Pather.new('https://my.host.com', 'api/v1',
-'object')
+pather = JsonClient::Pather.new(
+  'https://my.host.com',
+  'api/v1',
+  'object'
+)
 
 config = {
   api_key: 'api_key',
@@ -37,13 +42,14 @@ config = {
 
 client = CrudClient.new(pather, config)
 
-client.index.json # fetches from
-https://my.host.com/api/v1/objects?api_key=api_key&api_password=api_password
+# GET https://my.host.com/api/v1/objects?api_key=api_key&api_password=api_password
+client.index.json
  => { 'server_json' : 'is_parsed_here' }
 
 
-client.show(:id).json # fetches from
-https://my.host.com/api/v1/object/:id
+
+# GET https://my.host.com/api/v1/object/2?api_key=api_key&api_password=api_password
+client.show(2).json # fetches from
  => { 'object_json' : 'is_parsed_here' }
 
 # and others look at the unit tests for guidance!
