@@ -1,5 +1,6 @@
 require 'rest_client'
 require 'json_client/responses'
+require 'json_client/requests'
 
 module JsonClient
   class Base
@@ -14,15 +15,19 @@ module JsonClient
     end
 
     def index
-      uri = request_path
-      response = RestClient.get uri, params: auth_params
-      responses.index.new(response.body, response.code)
+      execute(
+        paths.index,
+        requests.index,
+        responses.index
+      )
     end
 
     def show(id)
-      uri = request_path(id)
-      response = RestClient.get uri, params: auth_params
-      responses.show.new(response.body, response.code)
+      execute(
+        paths.show(id),
+        requests.show,
+        responses.show
+      )
     end
 
     def create(model)
@@ -57,7 +62,13 @@ module JsonClient
 
     protected
 
+    def exectute(uri, requester, responder, *args)
+      response = requester.fetch(uri, auth_params, args)
+      responder.new(response.body, response.code)
+    end
+
     def requests
+      @requests ||= Requests.new
     end
 
     def responses
