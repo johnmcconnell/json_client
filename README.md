@@ -1,7 +1,6 @@
 # JsonClient
 [![Build
 Status](https://travis-ci.org/johnmcconnell/json_client.svg?branch=master)](https://travis-ci.org/johnmcconnell/json_client)
-
 [![Coverage
 Status](https://coveralls.io/repos/johnmcconnell/json_client/badge.png)](https://coveralls.io/r/johnmcconnell/json_client)
 
