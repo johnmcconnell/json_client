@@ -52,17 +52,14 @@ config = {
   api_password: 'api_password'
 }
 
-
 client = Client.new(config)
 
 # GET https://example.host.com/api/v1/objects?api_key=api_key&api_password=api_password
 client.index.json
  => { 'server_json' : 'is_parsed_here' }
 
-
-
 # GET https://my.host.com/api/v1/objects/2?api_key=api_key&api_password=api_password
-client.show(2).json # fetches from
+client.show(2).json
  => { 'object_json' : 'is_parsed_here' }
 ```
 
