@@ -4,79 +4,54 @@ require 'json_client/requests'
 
 module JsonClient
   class Base
-    attr_reader :api_key, :api_password
+    attr_reader :api_key, :api_password, :pather
 
     def initialize(pather, config)
       @api_key = config[:api_key]
       @api_password = config[:api_password]
       @pather = pather
-
       validate_variables
     end
 
     def index
-      execute(
-        paths.index,
-        requests.index,
-        responses.index
-      )
+      response = requestors.index.new.fetch(request_path, auth_params)
+      responders.index.new(response.body, response.code)
     end
 
     def show(id)
-      execute(
-        paths.show(id),
-        requests.show,
-        responses.show
-      )
+      response = requestors.show.new.fetch(request_path(id), auth_params)
+      responders.show.new(response.body, response.code)
     end
 
     def create(model)
-      uri = request_path
-      response = RestClient.post(
-        uri,
-        auth_params.merge(create_params(model)).to_json,
-        content_type: :json,
-        accept: :json
+      response = requestors.create.new.fetch(
+        request_path, auth_params, model
       )
-      responses.create.new(response.body, response.code)
+      responders.create.new(response.body, response.code)
     end
 
     def update(id, model)
-      uri = request_path(id)
-      response = RestClient.put(
-        uri,
-        auth_params.merge(update_params(model)).to_json,
-        content_type: :json,
-        accept: :json
+      response = requestors.update.new.fetch(
+        request_path(id), auth_params, model
       )
-      responses.update.new(response.body, response.code)
+      responders.update.new(response.body, response.code)
     end
 
     def destroy(id)
-      uri = request_path(id)
-      response = RestClient.delete(
-        uri, params: auth_params
+      requestors.destroy.new.fetch(
+        request_path(id), auth_params, model
       )
-      responses.destroy.new(response.body, response.code)
+      responders.destroy.new(response.body, response.code)
     end
 
     protected
 
-    def exectute(uri, requester, responder, *args)
-      response = requester.fetch(uri, auth_params, args)
-      responder.new(response.body, response.code)
+    def requestors
+      @requestors ||= Requests.new
     end
 
-    def requests
-      @requests ||= Requests.new
-    end
-
-    def responses
-      @responses ||= Responses.new
-    end
-
-    def create_params(model)
-      model.to_json
+    def responders
+      @responders ||= Responses.new
     end
 
     def update_params(model)
@@ -98,8 +73,8 @@ module JsonClient
 
     def validate_variables
       fail 'api_key must be set' if api_key.nil?
-      fail 'api_password must be set' if api_key.nil?
-      fail 'pather must be set' if api_key.nil?
+      fail 'api_password must be set' if api_password.nil?
+      fail 'pather must be set' if pather.nil?
     end
   end
 end

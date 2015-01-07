@@ -3,8 +3,10 @@ require_relative 'request'
 module JsonClient
   module BaseRequests
     class Destroy < Request
-      def initialize(body, code)
-        super
+      def fetch(url, auth_params)
+        client.delete(
+          uri, params: auth_params
+        )
       end
     end
   end
