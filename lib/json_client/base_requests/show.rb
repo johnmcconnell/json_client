@@ -3,12 +3,8 @@ require_relative 'request'
 module JsonClient
   module BaseRequests
     class Show < Request
-      def initialize(auth_params)
-        super
-      end
-
-      def fetch(url, id)
-        client.get url
+      def fetch(url, auth_params)
+        client.get url, params: auth_params
       end
     end
   end

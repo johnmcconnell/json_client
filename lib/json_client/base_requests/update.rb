@@ -14,7 +14,7 @@ module JsonClient
 
       protected
 
-      def update_params
+      def update_params(model)
         model.to_h
       end
     end

@@ -38,8 +38,8 @@ module JsonClient
     end
 
     def destroy(id)
-      requestors.destroy.new.fetch(
-        request_path(id), auth_params, model
+      response = requestors.destroy.new.fetch(
+        request_path(id), auth_params
       )
       responders.destroy.new(response.body, response.code)
     end

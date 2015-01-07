@@ -5,7 +5,7 @@ module JsonClient
     class Destroy < Request
       def fetch(url, auth_params)
         client.delete(
-          uri, params: auth_params
+          url, params: auth_params
         )
       end
     end
