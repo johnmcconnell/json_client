@@ -68,7 +68,7 @@ client.show(2).json # fetches from
 
 ## Best Guide
 
-Is [this
+The best guide is [this
 test](https://github.com/johnmcconnell/json_client/blob/master/spec/json_client/base_spec.rb).
 Sorry non rspec people
 
