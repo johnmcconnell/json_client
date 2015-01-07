@@ -2,6 +2,9 @@
 [![Build
 Status](https://travis-ci.org/johnmcconnell/json_client.svg?branch=master)](https://travis-ci.org/johnmcconnell/json_client)
 
+[![Coverage
+Status](https://coveralls.io/repos/johnmcconnell/json_client/badge.png)](https://coveralls.io/r/johnmcconnell/json_client)
+
 A simple crud json client so that I don't need to do this for
 all my web services
 
