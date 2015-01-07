@@ -1,5 +1,5 @@
 module JsonClient
-  module AbstractResponses
+  module BaseResponses
     class Response
       attr_reader :body, :code
 

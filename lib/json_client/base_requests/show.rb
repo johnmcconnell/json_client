@@ -1,8 +1,8 @@
-require_relative 'response'
+require_relative 'request'
 
 module JsonClient
-  module AbstractResponses
-    class Destroy < Response
+  module BaseRequests
+    class Show < Request
       def initialize(body, code)
         super
       end

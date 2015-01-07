@@ -1,7 +1,7 @@
 require_relative 'response'
 
 module JsonClient
-  module AbstractResponses
+  module BaseResponses
     class Show < Response
       def initialize(body, code)
         super

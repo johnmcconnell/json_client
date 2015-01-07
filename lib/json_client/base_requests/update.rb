@@ -1,8 +1,8 @@
-require_relative 'response'
+require_relative 'request'
 
 module JsonClient
-  module AbstractResponses
-    class Update < Response
+  module BaseRequests
+    class Update < Request
       def initialize(body, code)
         super
       end

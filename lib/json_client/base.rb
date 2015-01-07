@@ -1,32 +1,28 @@
 require 'rest_client'
-
-require_relative 'abstract_responses/index'
-require_relative 'abstract_responses/show'
-require_relative 'abstract_responses/create'
-require_relative 'abstract_responses/update'
-require_relative 'abstract_responses/destroy'
+require 'json_client/responses'
 
 module JsonClient
-  class AbstractClient
-    attr_reader :api_key, :api_password, :pather
+  class Base
+    attr_reader :api_key, :api_password
 
     def initialize(pather, config)
       @api_key = config[:api_key]
       @api_password = config[:api_password]
       @pather = pather
+
       validate_variables
     end
 
     def index
       uri = request_path
       response = RestClient.get uri, params: auth_params
-      index_response_factory.new(response.body, response.code)
+      responses.index.new(response.body, response.code)
     end
 
     def show(id)
       uri = request_path(id)
       response = RestClient.get uri, params: auth_params
-      show_response_factory.new(response.body, response.code)
+      responses.show.new(response.body, response.code)
     end
 
     def create(model)
@@ -37,7 +33,7 @@ module JsonClient
         content_type: :json,
         accept: :json
       )
-      create_response_factory.new(response.body, response.code)
+      responses.create.new(response.body, response.code)
     end
 
     def update(id, model)
@@ -48,7 +44,7 @@ module JsonClient
         content_type: :json,
         accept: :json
       )
-      update_response_factory.new(response.body, response.code)
+      responses.update.new(response.body, response.code)
     end
 
     def destroy(id)
@@ -56,29 +52,16 @@ module JsonClient
       response = RestClient.delete(
         uri, params: auth_params
       )
-      destroy_response_factory.new(response.body, response.code)
+      responses.destroy.new(response.body, response.code)
     end
 
     protected
 
-    def index_response_factory
-      AbstractResponses::Index
+    def requests
     end
 
-    def show_response_factory
-      AbstractResponses::Show
-    end
-
-    def create_response_factory
-      AbstractResponses::Create
-    end
-
-    def update_response_factory
-      AbstractResponses::Update
-    end
-
-    def destroy_response_factory
-      AbstractResponses::Destroy
+    def responses
+      @responses ||= Responses.new
     end
 
     def create_params(model)

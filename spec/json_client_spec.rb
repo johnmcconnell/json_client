@@ -17,19 +17,25 @@ describe JsonClient do
     }
   end
 
-  describe '::register' do
-    it 'registers a configuration to be used when invoked with ::new' do
-      client = described_class.new(
-        JsonClient::Pather.new(
-          config[:host],
-          'etc',
-          'end'
-        ),
-        config
-      )
-      expect(client.pather.host).to eq config[:host]
-      expect(client.api_key).to eq config[:api_key]
-      expect(client.api_password).to eq config[:api_password]
+  let(:pather) do
+    JsonClient::Pather.new(
+      config[:host],
+      'etc',
+      'end'
+    )
+  end
+
+  subject do
+    described_class.new(
+      pather,
+      config
+    )
+  end
+
+  describe '::new' do
+    it 'creates a new base client' do
+      expect(subject.api_key).to eq config[:api_key]
+      expect(subject.api_password).to eq config[:api_password]
     end
   end
 end
