@@ -25,16 +25,27 @@ Or install it yourself as:
 
 ## Usage
 
+I've avoided using a DSL in favor of good engineering principals. I am
+hoping the DSL will come after.
+
+
 ```
 require 'json_client'
-class CrudClient < JsonClient::AbstractClient
-end
 
-pather = JsonClient::Pather.new(
-  'https://my.host.com',
-  'api/v1',
-  'object'
-)
+class Client < JsonClient::Base
+  def initialize(config)
+    super
+  end
+
+  def pather
+    @pather ||=
+      JsonClient::Pather.new(
+        'https://example.host.com',
+        'api/v1',
+        'objects'
+      )
+  end
+end
 
 config = {
   api_key: 'api_key',
@@ -42,20 +53,24 @@ config = {
 }
 
 
-client = CrudClient.new(pather, config)
+client = Client.new(config)
 
-# GET https://my.host.com/api/v1/objects?api_key=api_key&api_password=api_password
+# GET https://example.host.com/api/v1/objects?api_key=api_key&api_password=api_password
 client.index.json
  => { 'server_json' : 'is_parsed_here' }
 
 
 
-# GET https://my.host.com/api/v1/object/2?api_key=api_key&api_password=api_password
+# GET https://my.host.com/api/v1/objects/2?api_key=api_key&api_password=api_password
 client.show(2).json # fetches from
  => { 'object_json' : 'is_parsed_here' }
-
-# and others look at the unit tests for guidance!
 ```
+
+## Best Guide
+
+Is [this
+test](https://github.com/johnmcconnell/json_client/blob/master/spec/json_client/base_spec.rb).
+Sorry non rspec people
 
 ## Contributing
 
