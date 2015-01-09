@@ -1,4 +1,6 @@
 # JsonClient
+[![Gem
+Version](https://badge.fury.io/rb/json_client.svg)](http://badge.fury.io/rb/json_client)
 [![Build
 Status](https://travis-ci.org/johnmcconnell/json_client.svg?branch=master)](https://travis-ci.org/johnmcconnell/json_client)
 [![Coverage
