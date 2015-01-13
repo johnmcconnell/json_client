@@ -21,7 +21,7 @@ module JsonClient
       end
 
       def use_not_defined_message
-        "use: `#{colletor_name}` must be defined"
+        "use: `#{collector_name}` must be defined"
       end
 
       def validate_opts!(opts)
