@@ -1,25 +1,14 @@
+require 'json_client/dsl/on_use_collector'
 require 'json_client/dsl/collector'
 
 module JsonClient
   module DSL
-    class SerializersCollector
-      def on(*names, opts)
-        validate_opts!(opts)
+    class SerializersCollector < OnUseCollector
 
-        serializer = opts[:with]
+      protected
 
-        Array(names).each do |name|
-          define_singleton_method(name) do
-            serializer
-          end
-        end
-      end
-
-
-      private
-
-      def validate_opts!(opts)
-        fail 'with: `serializer` must be defined' if opts[:with].nil?
+      def collector_name
+        'serializer'
       end
     end
   end
