@@ -9,15 +9,12 @@ module JsonClient
         serializer = opts[:with]
 
         Array(names).each do |name|
-          serializers.define_singleton_method(name) do
+          define_singleton_method(name) do
             serializer
           end
         end
       end
 
-      def serializers
-        @serializers ||= Object.new
-      end
 
       private
 

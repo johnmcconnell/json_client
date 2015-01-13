@@ -12,7 +12,7 @@ module JsonClient
       yield collector
 
       define_method :serializers do
-        collector.serializers
+        collector
       end
     end
   end
