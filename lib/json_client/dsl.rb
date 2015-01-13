@@ -4,7 +4,7 @@ require 'json_client/dsl/requests_collector'
 module JsonClient
   module DSL
     def serializers_collector
-      @collector ||= SerializersCollector.new
+      @serializers_collector ||= SerializersCollector.new
     end
 
     def serialize
@@ -18,7 +18,7 @@ module JsonClient
     end
 
     def requests_collector
-      @collector ||= RequestsCollector.new
+      @requests_collector ||= RequestsCollector.new
     end
 
     def request
@@ -26,7 +26,7 @@ module JsonClient
 
       yield collector
 
-      define_method :requestors do
+      define_method :requests do
         collector
       end
     end

@@ -1,10 +1,33 @@
 require 'rest_client'
+
+require 'json_client/dsl'
 require 'json_client/responses'
 require 'json_client/requests'
+require 'json_client/base_serializer'
+require 'json_client/empty_serializer'
+require 'json_client/base_requests/index'
+require 'json_client/base_requests/show'
+require 'json_client/base_requests/create'
+require 'json_client/base_requests/update'
+require 'json_client/base_requests/destroy'
 
 module JsonClient
   class Base
     attr_reader :api_key, :api_password, :pather
+    extend DSL
+
+    request do |r|
+      r.on :index, use: BaseRequests::Index.new
+      r.on :show, use: BaseRequests::Show.new
+      r.on :create, use: BaseRequests::Create.new
+      r.on :update, use: BaseRequests::Update.new
+      r.on :destroy, use: BaseRequests::Destroy.new
+    end
+
+    serialize do |s|
+      s.on :create, :update, :destroy, use: BaseSerializer.new
+      s.on :index, :show, use: EmptySerializer.new
+    end
 
     def initialize(pather, config)
       @api_key = config[:api_key]
@@ -14,52 +37,46 @@ module JsonClient
     end
 
     def index
-      response = requestors.index.new.fetch(request_path, auth_params)
+      response = fetch_response(:index, nil)
       responders.index.new(response.body, response.code)
     end
 
     def show(id)
-      response = requestors.show.new.fetch(request_path(id), auth_params)
+      response = fetch_response(:show, nil, id)
       responders.show.new(response.body, response.code)
     end
 
     def create(model)
-      response = requestors.create.new.fetch(
-        request_path, auth_params, model
-      )
+      response = fetch_response(:create, model)
       responders.create.new(response.body, response.code)
     end
 
     def update(id, model)
-      response = requestors.update.new.fetch(
-        request_path(id), auth_params, model
-      )
+      response = fetch_response(:update, model, id)
       responders.update.new(response.body, response.code)
     end
 
     def destroy(id)
-      response = requestors.destroy.new.fetch(
-        request_path(id), auth_params
-      )
+      response = fetch_response(:destroy, nil, id)
       responders.destroy.new(response.body, response.code)
     end
 
     protected
 
-    def requestors
-      @requestors ||= Requests.new
+    def fetch_response(name, model, id = nil)
+      path = pather.path(id)
+      request = requests.public_send(name)
+      serializer = serializers.public_send(name)
+      params = serializer.serialize(model)
+      fetch(path, request, params)
+    end
+
+    def fetch(path, request, params)
+      request.fetch(path, auth_params, params)
     end
 
     def responders
       @responders ||= Responses.new
-    end
-
-    def update_params(model)
-      model.to_json
-    end
-
-    def request_path(id = nil)
-      pather.path(id)
     end
 
     def auth_params

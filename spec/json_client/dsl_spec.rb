@@ -32,8 +32,8 @@ describe JsonClient::DSL do
     example_class.new.serializers
   end
 
-  let(:serializers) do
-    example_class.new.serializers
+  let(:requests) do
+    example_class.new.requests
   end
 
   describe '#serializers' do
@@ -47,14 +47,10 @@ describe JsonClient::DSL do
     end
   end
 
-  describe '#serializers' do
-    it 'adds a way of dynamically adding serializers' do
-
-      expect(serializers.index).to eq 'hello'
-      expect(serializers.show).to eq 'hello'
-      expect(serializers.read).to eq 'hello'
-
-      expect(serializers.delete).to eq 'world'
+  describe '#requests' do
+    it 'adds a way of dynamically adding requests' do
+      expect(requests.index).to eq 'abc'
+      expect(requests.delete).to eq 'xyz'
     end
   end
 end
