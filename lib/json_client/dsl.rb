@@ -1,5 +1,6 @@
 require 'json_client/dsl/serializers_collector'
 require 'json_client/dsl/requests_collector'
+require 'json_client/dsl/on_use_collector'
 
 module JsonClient
   module DSL
@@ -27,6 +28,20 @@ module JsonClient
       yield collector
 
       define_method :requests do
+        collector
+      end
+    end
+
+    def responses_collector
+      @responses_collector ||= OnUseCollector.new
+    end
+
+    def response
+      collector = responses_collector
+
+      yield collector
+
+      define_method :responses do
         collector
       end
     end

@@ -22,6 +22,11 @@ describe JsonClient::DSL do
         s.on :index, :show, :read, use: 'hello'
         s.on :delete, use: 'world'
       end
+
+      response do |r|
+        r.on :index, use: '0'
+        r.on :show, use: '1'
+      end
     end
 
     # return the class
@@ -36,6 +41,11 @@ describe JsonClient::DSL do
     example_class.new.requests
   end
 
+  let(:responses) do
+    example_class.new.responses
+  end
+
+
   describe '#serializers' do
     it 'adds a way of dynamically adding serializers' do
 
@@ -44,6 +54,13 @@ describe JsonClient::DSL do
       expect(serializers.read).to eq 'hello'
 
       expect(serializers.delete).to eq 'world'
+    end
+  end
+
+  describe '#responses' do
+    it 'adds a way of dynamically adding responses' do
+      expect(responses.index).to eq '0'
+      expect(responses.show).to eq '1'
     end
   end
 
