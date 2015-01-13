@@ -18,8 +18,8 @@ require 'json_client/base_responses/destroy'
 
 module JsonClient
   class Base
-    attr_reader :api_key, :api_password, :pather
     extend DSL
+    attr_reader :api_key, :api_password, :pather
 
     request do |r|
       r.on :index, use: BaseRequests::Index.new
