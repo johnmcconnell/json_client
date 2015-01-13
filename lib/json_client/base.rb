@@ -10,6 +10,11 @@ require 'json_client/base_requests/show'
 require 'json_client/base_requests/create'
 require 'json_client/base_requests/update'
 require 'json_client/base_requests/destroy'
+require 'json_client/base_responses/index'
+require 'json_client/base_responses/show'
+require 'json_client/base_responses/create'
+require 'json_client/base_responses/update'
+require 'json_client/base_responses/destroy'
 
 module JsonClient
   class Base
@@ -22,6 +27,14 @@ module JsonClient
       r.on :create, use: BaseRequests::Create.new
       r.on :update, use: BaseRequests::Update.new
       r.on :destroy, use: BaseRequests::Destroy.new
+    end
+
+    response do |r|
+      r.on :index, use: BaseResponses::Index
+      r.on :show, use: BaseResponses::Show
+      r.on :create, use: BaseResponses::Create
+      r.on :update, use: BaseResponses::Update
+      r.on :destroy, use: BaseResponses::Destroy
     end
 
     serialize do |s|
@@ -37,31 +50,31 @@ module JsonClient
     end
 
     def index
-      response = fetch_response(:index, nil)
-      responders.index.new(response.body, response.code)
+      result(:index, nil)
     end
 
     def show(id)
-      response = fetch_response(:show, nil, id)
-      responders.show.new(response.body, response.code)
+      result(:show, nil, id)
     end
 
     def create(model)
-      response = fetch_response(:create, model)
-      responders.create.new(response.body, response.code)
+      result(:create, model)
     end
 
     def update(id, model)
-      response = fetch_response(:update, model, id)
-      responders.update.new(response.body, response.code)
+      result(:update, model, id)
     end
 
     def destroy(id)
-      response = fetch_response(:destroy, nil, id)
-      responders.destroy.new(response.body, response.code)
+      result(:destroy, nil, id)
     end
 
     protected
+
+    def result(name, model, id = nil)
+      response = responses.public_send(name)
+      response.new(fetch_response(name, model, id))
+    end
 
     def fetch_response(name, model, id = nil)
       path = pather.path(id)
@@ -73,10 +86,6 @@ module JsonClient
 
     def fetch(path, request, params)
       request.fetch(path, auth_params, params)
-    end
-
-    def responders
-      @responders ||= Responses.new
     end
 
     def auth_params

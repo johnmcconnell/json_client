@@ -18,14 +18,20 @@ describe JsonClient::BaseResponses::Response do
     %q<{ "hello" : "world" }>
   end
 
+  let(:response) do
+    Object.new.tap do |r|
+      def r.code; 200; end
+      def r.body; %q<{ "hello" : "world" }>; end
+    end
+  end
+
   let(:json) do
     JSON.parse(body)
   end
 
   subject do
     described_class.new(
-      body,
-      code
+      response
     )
   end
 

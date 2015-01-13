@@ -1,19 +1,18 @@
 module JsonClient
   module BaseResponses
     class Response
-      attr_reader :body, :code
+      attr_reader :raw_response
 
-      def initialize(body, code)
-        @body = body
-        @code = code
+      def initialize(raw_response)
+        @raw_response = raw_response
+      end
+
+      def method_missing(name, *args)
+        raw_response.public_send(name, *args)
       end
 
       def json
         parse_json
-      end
-
-      def success?
-        code >= 200 && code < 300
       end
 
       protected
