@@ -8,7 +8,7 @@ module JsonClient
       @serializers_collector ||= SerializersCollector.new
     end
 
-    def serialize
+    def serializers
       collector = serializers_collector
 
       yield collector
@@ -22,7 +22,7 @@ module JsonClient
       @requests_collector ||= RequestsCollector.new
     end
 
-    def request
+    def requests
       collector = requests_collector
 
       yield collector
@@ -36,7 +36,7 @@ module JsonClient
       @responses_collector ||= OnUseCollector.new
     end
 
-    def response
+    def responses
       collector = responses_collector
 
       yield collector

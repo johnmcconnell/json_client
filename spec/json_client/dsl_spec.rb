@@ -13,17 +13,17 @@ describe JsonClient::DSL do
     class A
       extend JsonClient::DSL
 
-      request do |r|
+      requests do |r|
         r.on :index, use: 'abc'
         r.on :delete, use: 'xyz'
       end
 
-      serialize do |s|
+      serializers do |s|
         s.on :index, :show, :read, use: 'hello'
         s.on :delete, use: 'world'
       end
 
-      response do |r|
+      responses do |r|
         r.on :index, use: '0'
         r.on :show, use: '1'
       end

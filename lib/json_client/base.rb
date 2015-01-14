@@ -21,7 +21,7 @@ module JsonClient
     extend DSL
     attr_reader :api_key, :api_password, :pather
 
-    request do |r|
+    requests do |r|
       r.on :index, use: BaseRequests::Index.new
       r.on :show, use: BaseRequests::Show.new
       r.on :create, use: BaseRequests::Create.new
@@ -29,7 +29,7 @@ module JsonClient
       r.on :destroy, use: BaseRequests::Destroy.new
     end
 
-    response do |r|
+    responses do |r|
       r.on :index, use: BaseResponses::Index
       r.on :show, use: BaseResponses::Show
       r.on :create, use: BaseResponses::Create
@@ -37,7 +37,7 @@ module JsonClient
       r.on :destroy, use: BaseResponses::Destroy
     end
 
-    serialize do |s|
+    serializers do |s|
       s.on :create, :update, :destroy, use: BaseSerializer.new
       s.on :index, :show, use: EmptySerializer.new
     end
@@ -72,8 +72,8 @@ module JsonClient
     protected
 
     def result(name, model, id = nil)
-      response = responses.public_send(name)
-      response.new(fetch_response(name, model, id))
+      response_class = responses.public_send(name)
+      response_class.new(fetch_response(name, model, id))
     end
 
     def fetch_response(name, model, id = nil)
