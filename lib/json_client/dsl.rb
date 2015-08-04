@@ -27,7 +27,7 @@ module JsonClient
 
       yield collector
 
-      define_method :requests do
+      define_method :requestors do
         collector
       end
     end
@@ -41,7 +41,7 @@ module JsonClient
 
       yield collector
 
-      define_method :responses do
+      define_method :responders do
         collector
       end
     end

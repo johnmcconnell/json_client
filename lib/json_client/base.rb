@@ -1,52 +1,43 @@
-require 'rest_client'
-
-require 'json_client/dsl'
-require 'json_client/responses'
 require 'json_client/requests'
-require 'json_client/model_serializer'
+require 'json_client/response'
 require 'json_client/base_serializer'
 require 'json_client/empty_serializer'
-require 'json_client/base_requests/index'
-require 'json_client/base_requests/show'
-require 'json_client/base_requests/create'
-require 'json_client/base_requests/update'
-require 'json_client/base_requests/destroy'
-require 'json_client/base_responses/index'
-require 'json_client/base_responses/show'
-require 'json_client/base_responses/create'
-require 'json_client/base_responses/update'
-require 'json_client/base_responses/destroy'
+require 'json_client/dsl'
+require 'pry'
 
 module JsonClient
   class Base
     extend DSL
-    attr_reader :api_key, :api_password, :pather
+    attr_reader :secret_key, :client_id, :uri_builder
+
+    J = ::JsonClient
+    RS = J::Requests
 
     requests do |r|
-      r.on :index, use: BaseRequests::Index.new
-      r.on :show, use: BaseRequests::Show.new
-      r.on :create, use: BaseRequests::Create.new
-      r.on :update, use: BaseRequests::Update.new
-      r.on :destroy, use: BaseRequests::Destroy.new
+      r.on :index, use: RS::Index
+      r.on :show, use: RS::Show
+      r.on :create, use: RS::Create
+      r.on :update, use: RS::Update
+      r.on :destroy, use: RS::Destroy
     end
 
     responses do |r|
-      r.on :index, use: BaseResponses::Index
-      r.on :show, use: BaseResponses::Show
-      r.on :create, use: BaseResponses::Create
-      r.on :update, use: BaseResponses::Update
-      r.on :destroy, use: BaseResponses::Destroy
+      r.on :index, use: J::Response
+      r.on :show, use: J::Response
+      r.on :create, use: J::Response
+      r.on :update, use: J::Response
+      r.on :destroy, use: J::Response
     end
 
     serializers do |s|
-      s.on :create, :update, :destroy, use: BaseSerializer.new
-      s.on :index, :show, use: EmptySerializer.new
+      s.on :create, :update, :destroy, use: J::BaseSerializer.new
+      s.on :index, :show, use: J::EmptySerializer.new
     end
 
-    def initialize(pather, config)
-      @api_key = config[:api_key]
-      @api_password = config[:api_password]
-      @pather = pather
+    def initialize(uri_builder, config)
+      @client_id = config[:client_id]
+      @secret_key = config[:secret_key]
+      @uri_builder = uri_builder
       validate_variables
     end
 
@@ -72,36 +63,46 @@ module JsonClient
 
     protected
 
-    def result(name, model, id = nil)
-      response_class = responses.public_send(name)
-      response_class.new(fetch_response(name, model, id))
+    def result(protocol, model, id = nil)
+      responder = responders.for(protocol)
+
+      ## Fetch the response for protocol
+      response = fetch_response(protocol, model, id)
+
+      ## Create new response
+      responder.new(response)
     end
 
-    def fetch_response(name, model, id = nil)
-      path = pather.path(id)
-      request = requests.public_send(name)
-      serializer = serializers.public_send(name)
+    def build_request(protocol, model, id = nil)
+      ## Get URL path
+      uri = uri_builder.uri(id)
+      requester = requestors.for(protocol)
+
+      ## Find serializer for model
+      serializer = serializers.for(protocol)
       params = serializer.serialize(model)
-      fetch(path, request, params)
+
+      ## Build the request object
+      requester.new(uri, auth_params, params)
     end
 
-    def fetch(path, request, params)
-      request.fetch(path, auth_params, params)
+    def fetch_response(protocol, model, id = nil)
+      build_request(protocol, model, id).fetch
     end
 
     def auth_params
       {
-        api_key: api_key,
-        api_password: api_password
+        client_id: client_id,
+        secret_key: secret_key
       }
     end
 
     private
 
     def validate_variables
-      fail 'api_key must be set' if api_key.nil?
-      fail 'api_password must be set' if api_password.nil?
-      fail 'pather must be set' if pather.nil?
+      %w[uri_builder client_id secret_key].each do |name|
+        fail "#{name} must be set" if (send name).nil?
+      end
     end
   end
 end

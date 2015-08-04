@@ -9,7 +9,7 @@ VCR.configure do |c|
   c.hook_into :webmock
 end
 
-describe JsonClient::BaseResponses::Response do
+describe JsonClient::Response do
   let(:code) do
     200
   end

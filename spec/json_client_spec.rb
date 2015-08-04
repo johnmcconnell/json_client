@@ -11,14 +11,14 @@ end
 describe JsonClient do
   let(:config) do
     {
-      api_key: '124ecd49-07fd-4553-a5cd-0178b7fa8b3f',
-      api_password: 'IIoclO7kmQqJ1wixWrAuOA',
-      host: 'http://account-authenticator.herokuapp.com'
+      client_id: '0',
+      secret_key: 'dummy_key',
+      host: 'account-authenticator.herokuapp.com'
     }
   end
 
-  let(:pather) do
-    JsonClient::Pather.new(
+  let(:uri_builder) do
+    JsonClient::UriBuilder.new(
       config[:host],
       'etc',
       'end'
@@ -27,15 +27,29 @@ describe JsonClient do
 
   subject do
     described_class.new(
-      pather,
+      uri_builder,
       config
     )
   end
 
   describe '::new' do
     it 'creates a new base client' do
-      expect(subject.api_key).to eq config[:api_key]
-      expect(subject.api_password).to eq config[:api_password]
+      expect(subject.client_id).to eq config[:client_id]
+      expect(subject.secret_key).to eq config[:secret_key]
+    end
+  end
+
+  describe '::b64_encode' do
+    it 'base64 encodes a string' do
+      expect(described_class.b64_encode('0')).to eq('MA==')
+    end
+  end
+
+  describe '::md5_base64_digest' do
+    it 'creates an md5 digest for string' do
+      expect(
+        described_class.md5_base64_digest('hello world')
+      ).to eq('XrY7u+Ae7tCTyyK7j1rNww==')
     end
   end
 end
