@@ -9,19 +9,23 @@ VCR.configure do |c|
   c.hook_into :webmock
 end
 
-describe JsonClient::BaseResponses::Response do
+describe JsonClient::Response do
   let(:code) do
     200
   end
 
   let(:body) do
-    %q<{ "hello" : "world" }>
+    '{ "hello" : "world" }'
   end
 
   let(:response) do
     Object.new.tap do |r|
-      def r.code; 200; end
-      def r.body; %q<{ "hello" : "world" }>; end
+      def r.code
+        200
+      end
+      def r.body
+        '{ "hello" : "world" }'
+      end
     end
   end
 

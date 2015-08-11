@@ -1,8 +1,7 @@
-
 module JsonClient
   class EmptySerializer
-    def serialize(model)
-      {}
+    def serialize(_)
+      ''
     end
   end
 end

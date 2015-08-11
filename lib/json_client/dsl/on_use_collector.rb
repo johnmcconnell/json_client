@@ -13,6 +13,9 @@ module JsonClient
         end
       end
 
+      def for(name)
+        public_send name
+      end
 
       protected
 
