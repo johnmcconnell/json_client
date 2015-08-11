@@ -8,10 +8,10 @@ module JsonClient
       @md5 ||= ::JsonClient.md5_base64_digest(params)
     end
 
-    def fetch(request)
+    def execute!(request)
       if methods.include? request.method
         request.body = params
-        execute!(request)
+        super(request)
       else
         fail "#{request.method} must be in #{methods}"
       end
@@ -25,7 +25,7 @@ module JsonClient
 
     def headers
       super.merge({
-        'content-md5' => md5
+        'Content-MD5' => md5
       })
     end
   end

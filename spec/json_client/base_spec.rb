@@ -28,19 +28,27 @@ describe JsonClient::Base do
   end
 
   let(:account) do
-    { username: 'new_username', password: 'new_password' }
+    {
+      account: { username: 'new_username', password: 'new_password' }
+    }
   end
 
   let(:new_account) do
-    { username: 'new_username_1', password: 'new_password_1' }
+    {
+      account: { username: 'new_username_1', password: 'new_password_1' }
+    }
   end
 
   let(:destroy_account) do
-    { username: 'new_username_2', password: 'new_password_2' }
+    {
+      account: { username: 'new_username_2', password: 'new_password_2' }
+    }
   end
 
   let(:updated_account) do
-    { username: 'updated_username', password: 'updated_password' }
+    {
+      account: { username: 'updated_username', password: 'updated_password' }
+    }
   end
 
   subject do
@@ -76,11 +84,11 @@ describe JsonClient::Base do
   describe '#show' do
     it 'fetches the account' do
       VCR.use_cassette('show_success') do
-        response = subject.show(6).json
+        response = subject.show(2).json
 
-        expect(response['id']).to be 6
-        expect(response['created_at']).to eq '2015-01-04T20:36:28.339Z'
-        expect(response['updated_at']).to eq '2015-01-04T20:36:28.339Z'
+        expect(response['id']).to be 2
+        expect(response['created_at']).to eq '2015-08-11 05:46:28 +0000'
+        expect(response['updated_at']).to eq '2015-08-11 05:46:28 +0000'
       end
     end
   end
@@ -89,7 +97,6 @@ describe JsonClient::Base do
     it 'updates the account' do
       VCR.use_cassette('update_success') do
         r = subject.create(new_account)
-        binding.pry
         id = r.json['id']
 
         response = subject.update(id, updated_account).json
@@ -104,7 +111,6 @@ describe JsonClient::Base do
     it 'destroys the account' do
       VCR.use_cassette('destroy_success') do
         r = subject.create(destroy_account)
-        binding.pry
         id = r.json['id']
 
         response = subject.destroy(id).json

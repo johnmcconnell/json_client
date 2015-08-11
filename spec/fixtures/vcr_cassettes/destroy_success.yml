@@ -1,0 +1,108 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://127.0.0.1:3000/api/v2/accounts
+    body:
+      encoding: UTF-8
+      string: '{"account":{"username":"new_username_2","password":"new_password_2"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Content-Md5:
+      - dfp9/6hUVEGb+qoSkIjHGQ==
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+      Host:
+      - 127.0.0.1:3000
+      Date:
+      - Tue, 11 Aug 2015 05:46:28 GMT
+      Authorization:
+      - APIAuth 1:jqoBak/4rQGzOkE68wZkFbnkX7s=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"5cafc7592864a07d28e51c815e120ba4"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - request_method=POST; path=/
+      X-Request-Id:
+      - b8b99031-607c-4b56-9eda-62fda108b1f6
+      X-Runtime:
+      - '0.177914'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"id":3,"created_at":"2015-08-11 05:46:28 +0000","updated_at":"2015-08-11
+        05:46:28 +0000"}'
+    http_version: 
+  recorded_at: Tue, 11 Aug 2015 05:46:28 GMT
+- request:
+    method: delete
+    uri: http://127.0.0.1:3000/api/v2/accounts/3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+      Host:
+      - 127.0.0.1:3000
+      Date:
+      - Tue, 11 Aug 2015 05:46:28 GMT
+      Authorization:
+      - APIAuth 1:6zJzQcNflZ70uzfDeCHjJz/fEeA=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"a7f153d21e6c7effbc234f3242315d32"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - request_method=DELETE; path=/
+      X-Request-Id:
+      - 2a02029f-4bf1-4e84-b571-504423727fe5
+      X-Runtime:
+      - '0.024727'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"id":3}'
+    http_version: 
+  recorded_at: Tue, 11 Aug 2015 05:46:28 GMT
+recorded_with: VCR 2.9.3

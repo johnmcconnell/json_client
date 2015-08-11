@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://127.0.0.1:3000/api/v2/accounts
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+      Host:
+      - 127.0.0.1:3000
+      Date:
+      - Tue, 11 Aug 2015 05:46:26 GMT
+      Authorization:
+      - APIAuth 1:if37PuD7O2xnNl2F79KfWRC1IsE=
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"d750f6d7ca4471b89f25e4d5c7fa8d78"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9f23d55a-b913-460a-b680-18cc77295693
+      X-Runtime:
+      - '0.397713'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"accounts":[]}'
+    http_version: 
+  recorded_at: Tue, 11 Aug 2015 05:46:27 GMT
+recorded_with: VCR 2.9.3
