@@ -11,7 +11,7 @@ module JsonClient
     protected
 
     def methods
-     %w[GET DELETE POST PUT]
+      %w(GET DELETE POST PUT)
     end
   end
 end

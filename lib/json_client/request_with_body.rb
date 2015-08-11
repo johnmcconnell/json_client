@@ -20,13 +20,11 @@ module JsonClient
     protected
 
     def methods
-     %w[POST PUT]
+      %w(POST PUT)
     end
 
     def headers
-      super.merge({
-        'Content-MD5' => md5
-      })
+      super.merge('Content-MD5' => md5)
     end
   end
 end

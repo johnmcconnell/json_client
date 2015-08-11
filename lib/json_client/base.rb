@@ -100,7 +100,7 @@ module JsonClient
     private
 
     def validate_variables
-      %w[uri_builder client_id secret_key].each do |name|
+      %w(uri_builder client_id secret_key).each do |name|
         fail "#{name} must be set" if (send name).nil?
       end
     end

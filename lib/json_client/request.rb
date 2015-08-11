@@ -40,7 +40,7 @@ module JsonClient
     end
 
     def validate_variables
-      %w[url auth_params].each do |name|
+      %w(url auth_params).each do |name|
         fail "#{name} must be set" if (send name).nil?
       end
     end

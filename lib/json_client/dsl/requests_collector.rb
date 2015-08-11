@@ -4,7 +4,6 @@ require 'json_client/dsl/collector'
 module JsonClient
   module DSL
     class RequestsCollector < OnUseCollector
-
       protected
 
       def collector_name

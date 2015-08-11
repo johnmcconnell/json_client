@@ -15,13 +15,17 @@ describe JsonClient::Response do
   end
 
   let(:body) do
-    %q<{ "hello" : "world" }>
+    '{ "hello" : "world" }'
   end
 
   let(:response) do
     Object.new.tap do |r|
-      def r.code; 200; end
-      def r.body; %q<{ "hello" : "world" }>; end
+      def r.code
+        200
+      end
+      def r.body
+        '{ "hello" : "world" }'
+      end
     end
   end
 

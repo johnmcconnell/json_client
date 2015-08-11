@@ -6,4 +6,3 @@ Coveralls.wear!
 
 class SpecHelper
 end
-

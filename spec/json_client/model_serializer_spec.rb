@@ -14,11 +14,11 @@ describe JsonClient::ModelSerializer do
   end
 
   let(:model) do
-    {a: 0, b: 1}
+    { a: 0, b: 1 }
   end
 
   let(:hash_model) do
-    {account: {a: 0, b: 1}}
+    { account: { a: 0, b: 1 } }
   end
 
   let(:serialized) do
