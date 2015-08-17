@@ -27,10 +27,6 @@ Or install it yourself as:
 
 ## Usage
 
-I've avoided using a DSL in favor of good engineering principals. I am
-hoping the DSL will come after.
-
-
 ```
 require 'json_client'
 
@@ -41,40 +37,45 @@ class Client < JsonClient::Base
 
   def pather
     @pather ||=
-      JsonClient::Pather.new(
+      JsonClient::UriBuilder.new(
         'https://example.host.com',
         'api/v1',
-        'objects'
+        'objects',
+        '80'
       )
   end
 end
 
 config = {
-  api_key: 'api_key',
-  api_password: 'api_password'
+  client_id: '1',
+  secret_key: 'dummmy_key',
+  host: '127.0.0.1',
+  port: '3000'
 }
 
 client = Client.new(config)
 
-# GET https://example.host.com/api/v1/objects?api_key=api_key&api_password=api_password
+# GET http://example.host.com:80/api/v2/objects/2
+# Headers:
+# Content-Type: application/json
+# Accept: application/json
+# Authorization: APIAuth 1:oh3o3h00312h320u530s=
 client.index.json
  => { 'server_json' : 'is_parsed_here' }
 
-# GET https://my.host.com/api/v1/objects/2?api_key=api_key&api_password=api_password
+# GET http://example.host.com:80/api/v2/objects
+# Headers:
+# Content-Type: application/json
+# Accept: application/json
+# Authorization: APIAuth 1:oh3o3h00312h320u530s=
 client.show(2).json
  => { 'object_json' : 'is_parsed_here' }
 ```
 
 ## Best Guide
 
-The best guide is [this
-test](https://github.com/johnmcconnell/json_client/blob/master/spec/json_client/base_spec.rb).
-Sorry non rspec people
+Use [this test](https://github.com/johnmcconnell/json_client/blob/master/spec/json_client/base_spec.rb)
+as a guide.
 
 ## Contributing
-
-1. Fork it ( https://github.com/johnmcconnell/json_client/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+Contributions Welcome
